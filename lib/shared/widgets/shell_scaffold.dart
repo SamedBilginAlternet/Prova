@@ -11,8 +11,9 @@ class ShellScaffold extends StatelessWidget {
   const ShellScaffold({super.key, required this.child});
 
   int _locationToIndex(String location) {
-    if (location.startsWith('/history')) return 1;
-    if (location.startsWith('/profile')) return 2;
+    if (location.startsWith('/wardrobe')) return 1;
+    if (location.startsWith('/stylist')) return 2;
+    if (location.startsWith('/profile')) return 3;
     return 0; // home
   }
 
@@ -22,9 +23,12 @@ class ShellScaffold extends StatelessWidget {
         context.go(AppRoutes.home);
         break;
       case 1:
-        context.go(AppRoutes.history);
+        context.go(AppRoutes.wardrobe);
         break;
       case 2:
+        context.go(AppRoutes.stylist);
+        break;
+      case 3:
         context.go(AppRoutes.profile);
         break;
     }
@@ -55,18 +59,25 @@ class ShellScaffold extends StatelessWidget {
                   onTap: () => _onTap(context, 0),
                 ),
                 _NavItem(
-                  icon: Icons.photo_library_rounded,
-                  iconOutlined: Icons.photo_library_outlined,
-                  label: 'Geçmiş',
+                  icon: Icons.checkroom_rounded,
+                  iconOutlined: Icons.checkroom_outlined,
+                  label: 'Gardırop',
                   isSelected: currentIndex == 1,
                   onTap: () => _onTap(context, 1),
+                ),
+                _NavItem(
+                  icon: Icons.auto_awesome_rounded,
+                  iconOutlined: Icons.auto_awesome_outlined,
+                  label: 'Stilist',
+                  isSelected: currentIndex == 2,
+                  onTap: () => _onTap(context, 2),
                 ),
                 _NavItem(
                   icon: Icons.person_rounded,
                   iconOutlined: Icons.person_outline_rounded,
                   label: 'Profil',
-                  isSelected: currentIndex == 2,
-                  onTap: () => _onTap(context, 2),
+                  isSelected: currentIndex == 3,
+                  onTap: () => _onTap(context, 3),
                 ),
               ],
             ),

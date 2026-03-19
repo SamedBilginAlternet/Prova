@@ -11,26 +11,40 @@ import '../../features/history/presentation/history_screen.dart';
 import '../../features/home/presentation/home_screen.dart';
 import '../../features/photo/presentation/upload_photo_screen.dart';
 import '../../features/profile/presentation/profile_screen.dart';
+import '../../features/stylist/presentation/stylist_history_screen.dart';
+import '../../features/stylist/presentation/stylist_screen.dart';
 import '../../features/tryon/presentation/tryon_loading_screen.dart';
 import '../../features/tryon/presentation/tryon_result_screen.dart';
+import '../../features/wardrobe/models/wardrobe_item.dart';
+import '../../features/wardrobe/presentation/add_wardrobe_item_screen.dart';
+import '../../features/wardrobe/presentation/wardrobe_item_detail_screen.dart';
+import '../../features/wardrobe/presentation/wardrobe_screen.dart';
 import '../../shared/widgets/shell_scaffold.dart';
 
 part 'app_router.g.dart';
 
-// Route names as constants to avoid magic strings
 class AppRoutes {
   AppRoutes._();
 
   static const splash = '/';
   static const onboarding = '/onboarding';
   static const login = '/login';
+
+  // Shell tabs
   static const home = '/home';
+  static const wardrobe = '/wardrobe';
+  static const stylist = '/stylist';
+  static const profile = '/profile';
+
+  // Full-screen flows
   static const uploadPhoto = '/upload-photo';
   static const garmentBrowser = '/garments';
   static const tryonLoading = '/tryon/loading';
   static const tryonResult = '/tryon/result';
   static const history = '/history';
-  static const profile = '/profile';
+  static const addWardrobeItem = '/wardrobe/add';
+  static const wardrobeItemDetail = '/wardrobe/detail';
+  static const stylistHistory = '/stylist/history';
 }
 
 @riverpod
@@ -44,10 +58,8 @@ GoRouter appRouter(AppRouterRef ref) {
       final isLoggedIn = authState.valueOrNull?.session != null;
       final location = state.matchedLocation;
 
-      // Splash — always pass through, handled internally
       if (location == AppRoutes.splash) return null;
 
-      // Not logged in → only onboarding and login are allowed
       if (!isLoggedIn) {
         if (location == AppRoutes.onboarding || location == AppRoutes.login) {
           return null;
@@ -55,7 +67,6 @@ GoRouter appRouter(AppRouterRef ref) {
         return AppRoutes.login;
       }
 
-      // Logged in → don't show login/onboarding
       if (location == AppRoutes.login || location == AppRoutes.onboarding) {
         return AppRoutes.home;
       }
@@ -76,7 +87,7 @@ GoRouter appRouter(AppRouterRef ref) {
         builder: (context, state) => const LoginScreen(),
       ),
 
-      // Shell route — bottom nav wrapper
+      // Shell — 4-tab bottom nav
       ShellRoute(
         builder: (context, state, child) => ShellScaffold(child: child),
         routes: [
@@ -85,8 +96,18 @@ GoRouter appRouter(AppRouterRef ref) {
             builder: (context, state) => const HomeScreen(),
           ),
           GoRoute(
-            path: AppRoutes.history,
-            builder: (context, state) => const HistoryScreen(),
+            path: AppRoutes.wardrobe,
+            builder: (context, state) => const WardrobeScreen(),
+          ),
+          GoRoute(
+            path: AppRoutes.stylist,
+            builder: (context, state) {
+              final extra = state.extra as Map<String, dynamic>?;
+              return StylistScreen(
+                existingSessionId: extra?['existingSessionId'] as String?,
+                initialMessage: extra?['initialMessage'] as String?,
+              );
+            },
           ),
           GoRoute(
             path: AppRoutes.profile,
@@ -95,7 +116,7 @@ GoRouter appRouter(AppRouterRef ref) {
         ],
       ),
 
-      // Full-screen flows (no bottom nav)
+      // Full-screen flows
       GoRoute(
         path: AppRoutes.uploadPhoto,
         builder: (context, state) => const UploadPhotoScreen(),
@@ -118,17 +139,34 @@ GoRouter appRouter(AppRouterRef ref) {
           return TryonResultScreen(resultId: extra?['resultId'] as String? ?? '');
         },
       ),
+      GoRoute(
+        path: AppRoutes.history,
+        builder: (context, state) => const HistoryScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.addWardrobeItem,
+        builder: (context, state) => const AddWardrobeItemScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.wardrobeItemDetail,
+        builder: (context, state) {
+          final item = state.extra as WardrobeItem;
+          return WardrobeItemDetailScreen(item: item);
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.stylistHistory,
+        builder: (context, state) => const StylistHistoryScreen(),
+      ),
     ],
 
     errorBuilder: (context, state) => Scaffold(
-      body: Center(
-        child: Text('Sayfa bulunamadı: ${state.error}'),
-      ),
+      body: Center(child: Text('Sayfa bulunamadı: ${state.error}')),
     ),
   );
 }
 
-// Splash screen — handles auth redirect
+// Splash screen
 class SplashScreen extends ConsumerWidget {
   const SplashScreen({super.key});
 
@@ -142,7 +180,6 @@ class SplashScreen extends ConsumerWidget {
         if (state.session != null) {
           context.go(AppRoutes.home);
         } else {
-          // Check if onboarding has been seen
           context.go(AppRoutes.onboarding);
         }
       });
@@ -150,9 +187,7 @@ class SplashScreen extends ConsumerWidget {
 
     return const Scaffold(
       backgroundColor: Color(0xFFFAFAFA),
-      body: Center(
-        child: _ProvaBrandMark(),
-      ),
+      body: Center(child: _ProvaBrandMark()),
     );
   }
 }
@@ -176,11 +211,7 @@ class _ProvaBrandMark extends StatelessWidget {
             ),
             borderRadius: BorderRadius.circular(20),
           ),
-          child: const Icon(
-            Icons.checkroom_rounded,
-            color: Colors.white,
-            size: 36,
-          ),
+          child: const Icon(Icons.checkroom_rounded, color: Colors.white, size: 36),
         ),
         const SizedBox(height: 16),
         const Text(

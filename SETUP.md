@@ -33,7 +33,10 @@ In Supabase Dashboard → Storage:
 ### 5. Deploy Edge Function
 ```bash
 supabase functions deploy trigger-tryon
+supabase functions deploy ai-stylist
 supabase secrets set HF_TOKEN=hf_your_token_here
+supabase secrets set GEMINI_API_KEY=your_gemini_key_here
+# Get Gemini key free at: aistudio.google.com/app/apikey
 ```
 
 Get HF token: huggingface.co → Settings → Access Tokens → New token (read)
