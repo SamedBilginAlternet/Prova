@@ -1,0 +1,17 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Prova",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "args": [
+                "--dart-define",
+                "SUPABASE_URL=https://nkaalkzprqxmkyuuvpmw.supabase.co",
+                "--dart-define",
+                "SUPABASE_ANON_KEY=sb_publishable_sqeZ0l0yh3zobxTLIxTDmg_NcyG2bN9"
+            ]
+        }
+    ]
+}
