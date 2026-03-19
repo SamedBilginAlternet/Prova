@@ -9,7 +9,7 @@ part 'stylist_provider.g.dart';
 
 /// All past stylist sessions for the user.
 @riverpod
-Future<List<StylistSession>> stylistSessions(StylistSessionsRef ref) async {
+Future<List<StylistSession>> stylistSessions(Ref ref) async {
   ref.watch(currentUserProvider);
   return ref.watch(stylistRepositoryProvider).getSessions();
 }
@@ -17,7 +17,7 @@ Future<List<StylistSession>> stylistSessions(StylistSessionsRef ref) async {
 /// Messages in a given session.
 @riverpod
 Future<List<StylistMessage>> sessionMessages(
-  SessionMessagesRef ref,
+  Ref ref,
   String sessionId,
 ) async {
   return ref.watch(stylistRepositoryProvider).getMessages(sessionId);
@@ -25,7 +25,7 @@ Future<List<StylistMessage>> sessionMessages(
 
 /// All saved outfits.
 @riverpod
-Future<List<SavedOutfit>> savedOutfits(SavedOutfitsRef ref) async {
+Future<List<SavedOutfit>> savedOutfits(Ref ref) async {
   ref.watch(currentUserProvider);
   return ref.watch(stylistRepositoryProvider).getOutfits();
 }

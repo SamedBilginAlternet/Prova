@@ -9,6 +9,7 @@ import '../../../core/constants/app_text_styles.dart';
 import '../../../core/router/app_router.dart';
 import '../../../shared/widgets/prova_button.dart';
 import '../models/wardrobe_item.dart';
+import '../data/wardrobe_repository.dart';
 import '../providers/wardrobe_provider.dart';
 
 class WardrobeItemDetailScreen extends ConsumerStatefulWidget {
@@ -182,7 +183,7 @@ class _WardrobeItemDetailScreenState
             onPressed: () async {
               Navigator.pop(ctx);
               final deleted = await ref
-                  .read(wardrobeDeleteNotifierProvider.notifier)
+                  .read(wardrobeDeleteProvider.notifier)
                   .delete(widget.item);
               if (deleted && context.mounted) context.pop();
             },

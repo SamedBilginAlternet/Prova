@@ -8,7 +8,7 @@ part 'stylist_models.g.dart';
 // =============================================
 
 @freezed
-class StylistSession with _$StylistSession {
+abstract class StylistSession with _$StylistSession {
   const factory StylistSession({
     required String id,
     @JsonKey(name: 'user_id') required String userId,
@@ -22,7 +22,7 @@ class StylistSession with _$StylistSession {
 }
 
 @freezed
-class StylistMessage with _$StylistMessage {
+abstract class StylistMessage with _$StylistMessage {
   const factory StylistMessage({
     required String id,
     @JsonKey(name: 'session_id') required String sessionId,
@@ -32,6 +32,8 @@ class StylistMessage with _$StylistMessage {
     @JsonKey(name: 'structured_data') Map<String, dynamic>? structuredData,
     @JsonKey(name: 'created_at') required DateTime createdAt,
   }) = _StylistMessage;
+
+  const StylistMessage._();
 
   factory StylistMessage.fromJson(Map<String, dynamic> json) =>
       _$StylistMessageFromJson(json);
@@ -60,7 +62,7 @@ enum StylistResponseType {
 }
 
 @freezed
-class StylistResponse with _$StylistResponse {
+abstract class StylistResponse with _$StylistResponse {
   const factory StylistResponse({
     @JsonKey(name: 'response_type')
     @Default(StylistResponseType.general)
@@ -82,7 +84,7 @@ class StylistResponse with _$StylistResponse {
 }
 
 @freezed
-class OutfitSuggestion with _$OutfitSuggestion {
+abstract class OutfitSuggestion with _$OutfitSuggestion {
   const factory OutfitSuggestion({
     required String name,
     @JsonKey(name: 'item_ids') @Default([]) List<String> itemIds,
@@ -97,7 +99,7 @@ class OutfitSuggestion with _$OutfitSuggestion {
 }
 
 @freezed
-class OutfitRating with _$OutfitRating {
+abstract class OutfitRating with _$OutfitRating {
   const factory OutfitRating({
     @Default(7) int score,        // 1-10
     String? summary,
@@ -114,7 +116,7 @@ class OutfitRating with _$OutfitRating {
 // =============================================
 
 @freezed
-class SavedOutfit with _$SavedOutfit {
+abstract class SavedOutfit with _$SavedOutfit {
   const factory SavedOutfit({
     required String id,
     @JsonKey(name: 'user_id') required String userId,
@@ -134,7 +136,7 @@ class SavedOutfit with _$SavedOutfit {
 }
 
 @freezed
-class OutfitItemRef with _$OutfitItemRef {
+abstract class OutfitItemRef with _$OutfitItemRef {
   const factory OutfitItemRef({
     required String id,
     @JsonKey(name: 'outfit_id') required String outfitId,

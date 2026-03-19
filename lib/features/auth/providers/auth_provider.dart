@@ -7,25 +7,25 @@ part 'auth_provider.g.dart';
 /// Streams Supabase auth state changes.
 /// Used by the router to decide which screens to show.
 @riverpod
-Stream<AuthState> authState(AuthStateRef ref) {
+Stream<AuthState> authState(Ref ref) {
   return supabase.auth.onAuthStateChange;
 }
 
 /// Current session — null if not logged in.
 @riverpod
-Session? currentSession(CurrentSessionRef ref) {
+Session? currentSession(Ref ref) {
   return supabase.auth.currentSession;
 }
 
 /// Current user — null if not logged in.
 @riverpod
-User? currentUser(CurrentUserRef ref) {
+User? currentUser(Ref ref) {
   return supabase.auth.currentUser;
 }
 
 /// Auth operations (sign in, sign up, sign out).
 @riverpod
-AuthRepository authRepository(AuthRepositoryRef ref) {
+AuthRepository authRepository(Ref ref) {
   return AuthRepository();
 }
 

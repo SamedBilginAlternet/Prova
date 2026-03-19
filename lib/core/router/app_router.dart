@@ -48,14 +48,14 @@ class AppRoutes {
 }
 
 @riverpod
-GoRouter appRouter(AppRouterRef ref) {
+GoRouter appRouter(Ref ref) {
   final authState = ref.watch(authStateProvider);
 
   return GoRouter(
     debugLogDiagnostics: true,
     initialLocation: AppRoutes.splash,
     redirect: (context, state) {
-      final isLoggedIn = authState.valueOrNull?.session != null;
+      final isLoggedIn = authState.value?.session != null;
       final location = state.matchedLocation;
 
       if (location == AppRoutes.splash) return null;

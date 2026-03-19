@@ -3,12 +3,13 @@ import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:path/path.dart' as path;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:uuid/uuid.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../core/supabase/supabase_client.dart';
 
 part 'photo_repository.g.dart';
 
 @riverpod
-PhotoRepository photoRepository(PhotoRepositoryRef ref) {
+PhotoRepository photoRepository(Ref ref) {
   return PhotoRepository();
 }
 
@@ -40,7 +41,7 @@ class PhotoRepository {
         .uploadBinary(
           storagePath,
           compressed,
-          fileOptions: const FileOptions(contentType: 'image/jpeg', upsert: true),
+          fileOptions: FileOptions(contentType: 'image/jpeg', upsert: true),
         );
 
     return storagePath;

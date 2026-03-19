@@ -5,7 +5,7 @@ import '../models/stylist_models.dart';
 part 'stylist_repository.g.dart';
 
 @riverpod
-StylistRepository stylistRepository(StylistRepositoryRef ref) {
+StylistRepository stylistRepository(Ref ref) {
   return StylistRepository();
 }
 

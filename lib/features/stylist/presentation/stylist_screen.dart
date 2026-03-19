@@ -49,7 +49,7 @@ class _StylistScreenState extends ConsumerState<StylistScreen> {
   Future<void> _init() async {
     if (_initialized) return;
     _initialized = true;
-    await ref.read(stylistChatNotifierProvider.notifier).initSession(
+    await ref.read(stylistChatProvider.notifier).initSession(
           existingSessionId: widget.existingSessionId,
           initialMessage: widget.initialMessage,
         );
@@ -66,7 +66,7 @@ class _StylistScreenState extends ConsumerState<StylistScreen> {
     final trimmed = text.trim();
     if (trimmed.isEmpty) return;
     _inputCtrl.clear();
-    ref.read(stylistChatNotifierProvider.notifier).sendMessage(trimmed);
+    ref.read(stylistChatProvider.notifier).sendMessage(trimmed);
     _scrollToBottom();
   }
 
@@ -84,20 +84,21 @@ class _StylistScreenState extends ConsumerState<StylistScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final chatState = ref.watch(stylistChatNotifierProvider);
+    final chatState = ref.watch(stylistChatProvider);
     final user = ref.watch(currentUserProvider);
 
     final messages = switch (chatState) {
       StylistChatIdle s => s.messages,
       StylistChatSending s => s.messages,
       StylistChatError s => s.messages,
+      _ => <StylistMessage>[],
     };
 
     final isSending = chatState is StylistChatSending;
     final hasError = chatState is StylistChatError;
 
     // Auto-scroll when messages change
-    ref.listen(stylistChatNotifierProvider, (_, __) => _scrollToBottom());
+    ref.listen(stylistChatProvider, (_, __) => _scrollToBottom());
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -148,7 +149,7 @@ class _StylistScreenState extends ConsumerState<StylistScreen> {
                               ? null
                               : (suggestion) async {
                                   final chatNotifier = ref.read(
-                                    stylistChatNotifierProvider.notifier,
+                                    stylistChatProvider.notifier,
                                   );
                                   final sessionId =
                                       (chatState as StylistChatIdle).sessionId;

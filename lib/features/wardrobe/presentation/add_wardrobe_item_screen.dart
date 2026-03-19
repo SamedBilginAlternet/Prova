@@ -59,7 +59,7 @@ class _AddWardrobeItemScreenState extends ConsumerState<AddWardrobeItemScreen> {
       return;
     }
 
-    await ref.read(wardrobeUploadNotifierProvider.notifier).upload(
+    await ref.read(wardrobeUploadProvider.notifier).upload(
           imageFile: _imageFile!,
           category: _category.value,
           name: _nameCtrl.text.trim().isEmpty ? null : _nameCtrl.text.trim(),
@@ -73,11 +73,11 @@ class _AddWardrobeItemScreenState extends ConsumerState<AddWardrobeItemScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final uploadState = ref.watch(wardrobeUploadNotifierProvider);
+    final uploadState = ref.watch(wardrobeUploadProvider);
 
-    ref.listen(wardrobeUploadNotifierProvider, (_, next) {
+    ref.listen(wardrobeUploadProvider, (_, next) {
       if (next is WardrobeUploadSuccess) {
-        ref.read(wardrobeUploadNotifierProvider.notifier).reset();
+        ref.read(wardrobeUploadProvider.notifier).reset();
         context.pop();
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Kıyafet gardırobuna eklendi!')),

@@ -15,7 +15,7 @@ class SelectedCategory extends _$SelectedCategory {
 
 /// Fetches garments, filtered by [SelectedCategory].
 @riverpod
-Future<List<Garment>> garments(GarmentsRef ref) async {
+Future<List<Garment>> garments(Ref ref) async {
   final category = ref.watch(selectedCategoryProvider);
   final repo = ref.watch(garmentRepositoryProvider);
   return repo.getGarments(

@@ -27,7 +27,7 @@ class WardrobeFilter extends _$WardrobeFilter {
 
 /// Full wardrobe list, reactive to filter changes.
 @riverpod
-Future<List<WardrobeItem>> wardrobeItems(WardrobeItemsRef ref) async {
+Future<List<WardrobeItem>> wardrobeItems(Ref ref) async {
   ref.watch(currentUserProvider); // invalidate on auth change
   final filter = ref.watch(wardrobeFilterProvider);
   final repo = ref.watch(wardrobeRepositoryProvider);
@@ -40,14 +40,14 @@ Future<List<WardrobeItem>> wardrobeItems(WardrobeItemsRef ref) async {
 
 /// Single item detail.
 @riverpod
-Future<WardrobeItem> wardrobeItem(WardrobeItemRef ref, String id) async {
+Future<WardrobeItem> wardrobeItem(Ref ref, String id) async {
   final repo = ref.watch(wardrobeRepositoryProvider);
   return repo.getItem(id);
 }
 
 /// Signed URL for a wardrobe item image.
 @riverpod
-Future<String?> wardrobeItemUrl(WardrobeItemUrlRef ref, String storagePath) async {
+Future<String?> wardrobeItemUrl(Ref ref, String storagePath) async {
   if (storagePath.isEmpty) return null;
   final repo = ref.read(wardrobeRepositoryProvider);
   return repo.getSignedUrl(storagePath);

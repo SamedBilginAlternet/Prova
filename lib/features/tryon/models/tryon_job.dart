@@ -11,7 +11,7 @@ enum TryonJobStatus {
 }
 
 @freezed
-class TryonJob with _$TryonJob {
+abstract class TryonJob with _$TryonJob {
   const factory TryonJob({
     required String id,
     @JsonKey(name: 'user_id') required String userId,
@@ -29,7 +29,7 @@ class TryonJob with _$TryonJob {
 }
 
 @freezed
-class TryonResult with _$TryonResult {
+abstract class TryonResult with _$TryonResult {
   const factory TryonResult({
     required String id,
     @JsonKey(name: 'job_id') required String jobId,

@@ -5,7 +5,7 @@ import '../models/garment.dart';
 part 'garment_repository.g.dart';
 
 @riverpod
-GarmentRepository garmentRepository(GarmentRepositoryRef ref) {
+GarmentRepository garmentRepository(Ref ref) {
   return GarmentRepository();
 }
 

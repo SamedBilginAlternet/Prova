@@ -36,17 +36,17 @@ class _UploadPhotoScreenState extends ConsumerState<UploadPhotoScreen> {
 
   Future<void> _upload() async {
     if (_previewFile == null) return;
-    await ref.read(photoUploadNotifierProvider.notifier).upload(_previewFile!);
+    await ref.read(photoUploadProvider.notifier).upload(_previewFile!);
   }
 
   @override
   Widget build(BuildContext context) {
-    final uploadState = ref.watch(photoUploadNotifierProvider);
+    final uploadState = ref.watch(photoUploadProvider);
 
     // Navigate after successful upload
-    ref.listen(photoUploadNotifierProvider, (_, next) {
+    ref.listen(photoUploadProvider, (_, next) {
       if (next is UploadSuccess) {
-        ref.read(photoUploadNotifierProvider.notifier).reset();
+        ref.read(photoUploadProvider.notifier).reset();
         context.go(AppRoutes.garmentBrowser);
       }
     });

@@ -3,13 +3,14 @@ import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:path/path.dart' as p;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:uuid/uuid.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../core/supabase/supabase_client.dart';
 import '../models/wardrobe_item.dart';
 
 part 'wardrobe_repository.g.dart';
 
 @riverpod
-WardrobeRepository wardrobeRepository(WardrobeRepositoryRef ref) {
+WardrobeRepository wardrobeRepository(Ref ref) {
   return WardrobeRepository();
 }
 
@@ -22,13 +23,13 @@ class WardrobeRepository {
     String? season,
     String? occasion,
   }) async {
-    var query = supabase.from(_table).select().order('created_at', ascending: false);
+    var query = supabase.from(_table).select();
 
     if (category != null) query = query.eq('category', category);
     if (season != null && season != 'all') query = query.eq('season', season);
     if (occasion != null && occasion != 'all') query = query.eq('occasion', occasion);
 
-    final data = await query;
+    final data = await query.order('created_at', ascending: false);
     return data.map<WardrobeItem>((j) => WardrobeItem.fromJson(j)).toList();
   }
 
@@ -68,7 +69,7 @@ class WardrobeRepository {
     await supabase.storage.from(_bucket).uploadBinary(
           storagePath,
           compressed,
-          fileOptions: const FileOptions(contentType: 'image/jpeg', upsert: true),
+          fileOptions: FileOptions(contentType: 'image/jpeg', upsert: true),
         );
 
     // Insert DB record

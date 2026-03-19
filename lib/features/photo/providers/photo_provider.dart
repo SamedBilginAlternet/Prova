@@ -17,7 +17,7 @@ class SelectedPhotoFile extends _$SelectedPhotoFile {
 
 /// The active uploaded photo record (storage_path + id).
 @riverpod
-Future<Map<String, dynamic>?> activeUserPhoto(ActiveUserPhotoRef ref) async {
+Future<Map<String, dynamic>?> activeUserPhoto(Ref ref) async {
   final user = ref.watch(currentUserProvider);
   if (user == null) return null;
 
@@ -27,7 +27,7 @@ Future<Map<String, dynamic>?> activeUserPhoto(ActiveUserPhotoRef ref) async {
 
 /// Signed URL for the active user photo.
 @riverpod
-Future<String?> activePhotoUrl(ActivePhotoUrlRef ref) async {
+Future<String?> activePhotoUrl(Ref ref) async {
   final photo = await ref.watch(activeUserPhotoProvider.future);
   if (photo == null) return null;
 

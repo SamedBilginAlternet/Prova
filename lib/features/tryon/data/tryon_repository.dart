@@ -5,7 +5,7 @@ import '../models/tryon_job.dart';
 part 'tryon_repository.g.dart';
 
 @riverpod
-TryonRepository tryonRepository(TryonRepositoryRef ref) {
+TryonRepository tryonRepository(Ref ref) {
   return TryonRepository();
 }
 

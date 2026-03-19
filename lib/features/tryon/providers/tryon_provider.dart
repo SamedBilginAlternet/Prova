@@ -9,7 +9,7 @@ part 'tryon_provider.g.dart';
 
 /// Watches a tryon job via Realtime and resolves once completed/failed.
 @riverpod
-Stream<TryonJob> tryonJobStream(TryonJobStreamRef ref, String jobId) {
+Stream<TryonJob> tryonJobStream(Ref ref, String jobId) {
   final repo = ref.watch(tryonRepositoryProvider);
   return repo.watchJob(jobId);
 }
@@ -17,7 +17,7 @@ Stream<TryonJob> tryonJobStream(TryonJobStreamRef ref, String jobId) {
 /// Fetch a specific result by its ID.
 @riverpod
 Future<TryonResult?> tryonResultByJob(
-  TryonResultByJobRef ref,
+  Ref ref,
   String jobId,
 ) async {
   final repo = ref.watch(tryonRepositoryProvider);
@@ -27,7 +27,7 @@ Future<TryonResult?> tryonResultByJob(
 /// Get signed URL for a result image.
 @riverpod
 Future<String?> tryonResultUrl(
-  TryonResultUrlRef ref,
+  Ref ref,
   String storagePath,
 ) async {
   final repo = ref.read(tryonRepositoryProvider);
@@ -36,7 +36,7 @@ Future<String?> tryonResultUrl(
 
 /// User's history of try-on results.
 @riverpod
-Future<List<Map<String, dynamic>>> tryonHistory(TryonHistoryRef ref) async {
+Future<List<Map<String, dynamic>>> tryonHistory(Ref ref) async {
   ref.watch(currentUserProvider); // invalidate on auth change
   final repo = ref.watch(tryonRepositoryProvider);
   return repo.getUserHistory();
