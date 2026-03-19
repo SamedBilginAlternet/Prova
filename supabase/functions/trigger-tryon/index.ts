@@ -107,7 +107,7 @@ Deno.serve(async (req: Request) => {
       .from("tryon_jobs")
       .insert({
         user_id: user.id,
-        photo_id: photo_id,
+        user_photo_path: photoRecord.storage_path, // store the actual path, not the ID
         garment_id: garment_id,
         status: "pending",
       })
@@ -130,7 +130,7 @@ Deno.serve(async (req: Request) => {
       // Mark job as failed if HF call throws
       await adminClient
         .from("tryon_jobs")
-        .update({ status: "failed", error_msg: err.message })
+        .update({ status: "failed", error_message: err.message })
         .eq("id", job.id);
     });
 
@@ -232,7 +232,6 @@ async function callHuggingFaceAndComplete(
     .from("tryon_results")
     .insert({
       job_id: jobId,
-      user_id: userId,
       storage_path: resultPath,
     })
     .select()
